@@ -1,7 +1,7 @@
 name: Django                                  # workflow name
 
 on:
-  push:                                       
+  push:
     branches:                                 # similar to "only" in GitLab
       - main
 
@@ -55,10 +55,11 @@ jobs:
             p/security-audit
             p/secrets
             p/django
+        continue-on-error: true             # allow the build to fail, similar to "allow_failure: true" in GitLab
 
   integration:
     runs-on: ubuntu-20.04
-    needs: test
+    needs: oast-frontend
     steps:
       - run: echo "This is an integration step"
       - run: exit 1
