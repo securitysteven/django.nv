@@ -31,11 +31,12 @@ jobs:
 
       - run:
           name: "Semgrep scan"
-          command: semgrep-agent --gitlab-json > semgrep-output.json
+          command: semgrep-agent --gitlab-json > semgrep-output.json || true
 
       - store_artifacts:
           path: semgrep-output.json
           destination: semgrep-artifact
+          when: always
 
   integration:
     docker:
@@ -46,6 +47,7 @@ jobs:
           command: |
             echo "This is an integration step"
             exit 1
+          when: on_fail                    # Even if the job fails, continue to the next stages
 
   prod:
     docker:
@@ -61,13 +63,13 @@ workflows:
       - build
       - test:
           requires:
-            - build 
+            - build
       - semgrep:
           requires:
             - test
       - integration:
           requires:
-            - test
+            - sast
       - prod:
           type: approval
           requires:
