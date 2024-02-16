@@ -62,6 +62,9 @@ workflows:
       - test:
           requires:
             - build 
+      - semgrep:
+          requires:
+            - test
       - integration:
           requires:
             - test
