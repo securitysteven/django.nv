@@ -19,7 +19,7 @@ jobs:
 
   integration:
     runs-on: ubuntu-20.04
-    needs: container_scanning
+    needs: test
     steps:
       - run: echo "This is an integration step"
       - run: exit 1
